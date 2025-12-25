@@ -399,10 +399,32 @@ fn extract_invocation_name(node: Node, source: &str) -> String {
 fn is_primitive_type(name: &str) -> bool {
     matches!(
         name,
-        "int" | "long" | "short" | "byte" | "float" | "double" | "decimal" | "bool" | "char"
-            | "string" | "object" | "void" | "dynamic" | "var"
-            | "Int32" | "Int64" | "Int16" | "Byte" | "Single" | "Double" | "Decimal" | "Boolean"
-            | "Char" | "String" | "Object" | "Void"
+        "int"
+            | "long"
+            | "short"
+            | "byte"
+            | "float"
+            | "double"
+            | "decimal"
+            | "bool"
+            | "char"
+            | "string"
+            | "object"
+            | "void"
+            | "dynamic"
+            | "var"
+            | "Int32"
+            | "Int64"
+            | "Int16"
+            | "Byte"
+            | "Single"
+            | "Double"
+            | "Decimal"
+            | "Boolean"
+            | "Char"
+            | "String"
+            | "Object"
+            | "Void"
     )
 }
 

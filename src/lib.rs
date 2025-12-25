@@ -17,17 +17,23 @@ const LANGUAGE: &str = "csharp";
 const SERVICE_ID: &str = "adi.indexer.lang.csharp";
 
 extern "C" fn plugin_info() -> PluginInfo {
-    PluginInfo::new("adi.lang.csharp", "C# Language Support", env!("CARGO_PKG_VERSION"), "language")
-        .with_author("ADI Team")
-        .with_description("C# language parsing and analysis for ADI indexer")
-        .with_min_host_version("0.8.0")
+    PluginInfo::new(
+        "adi.lang.csharp",
+        "C# Language Support",
+        env!("CARGO_PKG_VERSION"),
+        "language",
+    )
+    .with_author("ADI Team")
+    .with_description("C# language parsing and analysis for ADI indexer")
+    .with_min_host_version("0.8.0")
 }
 
 extern "C" fn plugin_init(ctx: *mut PluginContext) -> i32 {
     unsafe {
         let host = (*ctx).host();
-        let descriptor = ServiceDescriptor::new(SERVICE_ID, ServiceVersion::new(1, 0, 0), "adi.lang.csharp")
-            .with_description("C# language analyzer for code indexing");
+        let descriptor =
+            ServiceDescriptor::new(SERVICE_ID, ServiceVersion::new(1, 0, 0), "adi.lang.csharp")
+                .with_description("C# language analyzer for code indexing");
         let handle = ServiceHandle::new(
             SERVICE_ID,
             ctx as *const c_void,
@@ -84,8 +90,7 @@ extern "C" fn analyzer_list_methods(_handle: *const c_void) -> RVec<ServiceMetho
             .with_description("Extract symbols from C# source code"),
         ServiceMethod::new(METHOD_EXTRACT_REFERENCES)
             .with_description("Extract references from C# source code"),
-        ServiceMethod::new(METHOD_GET_INFO)
-            .with_description("Get language plugin information"),
+        ServiceMethod::new(METHOD_GET_INFO).with_description("Get language plugin information"),
     ]
     .into_iter()
     .collect()
@@ -104,7 +109,12 @@ fn handle_get_grammar_path() -> RResult<RString, ServiceError> {
 fn handle_extract_symbols(args: &str) -> RResult<RString, ServiceError> {
     let request: ExtractRequest = match serde_json::from_str(args) {
         Ok(r) => r,
-        Err(e) => return RResult::RErr(ServiceError::invocation_error(format!("Invalid request: {}", e))),
+        Err(e) => {
+            return RResult::RErr(ServiceError::invocation_error(format!(
+                "Invalid request: {}",
+                e
+            )))
+        }
     };
     let symbols = analyzer::extract_symbols(&request.source);
     match serde_json::to_string(&symbols) {
@@ -116,7 +126,12 @@ fn handle_extract_symbols(args: &str) -> RResult<RString, ServiceError> {
 fn handle_extract_references(args: &str) -> RResult<RString, ServiceError> {
     let request: ExtractRequest = match serde_json::from_str(args) {
         Ok(r) => r,
-        Err(e) => return RResult::RErr(ServiceError::invocation_error(format!("Invalid request: {}", e))),
+        Err(e) => {
+            return RResult::RErr(ServiceError::invocation_error(format!(
+                "Invalid request: {}",
+                e
+            )))
+        }
     };
     let references = analyzer::extract_references(&request.source);
     match serde_json::to_string(&references) {
