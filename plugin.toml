@@ -1,0 +1,12 @@
+[plugin]
+id = "adi.lang.csharp"
+name = "C# Language Support"
+version = "0.1.0"
+api_version = 2
+
+[language]
+id = "csharp"
+extensions = ["cs"]
+
+[provides]
+services = ["adi.indexer.lang.csharp"]
